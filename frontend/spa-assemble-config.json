@@ -44,7 +44,9 @@
     "@openmrs/esm-system-admin-app": "next",
     "@openmrs/esm-task-list-app": "next",
     "@openmrs/esm-user-onboarding-app": "next",
-    "@openmrs/esm-ward-app": "next"
+    "@openmrs/esm-ward-app": "next",
+    "@clinicemr/esm-patient-lab-request-form-app": "1.1.2",
+    "@clinicemr/esm-post-registration-redirect-app": "1.3.0"
   },
   "excludedFrontendModules": []
 }
