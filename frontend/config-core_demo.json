@@ -65,17 +65,17 @@
     }
   },
   "@openmrs/esm-login-app": {
-    "announcements": [
+          "logo": {
+        "src": "/openmrs/spa/logo-login.png",
+        "alt": "ClinicEMR - Medical Records System"
+      },
+      "announcements": [
       {
         "title": "Kireka Adventist Health Centre",
         "text": "P.O Box 860727, Kampala, Uganda",
         "info": "Tel: 0741-037829 | 0792-110351"
       }
     ],
-      "logo": {
-        "src": "/openmrs/spa/logo.png",
-        "alt": "ClinicEMR - Medical Records System"
-      },
       "footer": {
       "additionalLogos": [
         {
