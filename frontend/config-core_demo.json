@@ -14,7 +14,8 @@
     "consultationBillableServiceUuid": "",
     "cashPointUuid": "",
     "defaultCurrency": "UGX",
-    "registrationEncounterTypeUuid": "dd528487-82a5-4082-9c72-ed246bd49591"
+    "registrationEncounterTypeUuid": "dd528487-82a5-4082-9c72-ed246bd49591",
+    "billingApiBasePath": "cashier"
   },
   "@clinicemr/esm-patient-lab-request-form-app": {
     "labOrderEncounterTypeUuid": "67a71486-1a54-468f-ac3e-7091a9a79584",
