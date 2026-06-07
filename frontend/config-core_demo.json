@@ -59,6 +59,23 @@
       ]
     }
   },
+  "@openmrs/esm-login-app": {
+      "logo": {
+        "src": "/openmrs/spa/logo.png",
+        "alt": "ClinicEMR - Medical Records System"
+      },
+      "background": {
+        "image": "/openmrs/spa/background-image.png"
+      },
+      "footer": {
+      "additionalLogos": [
+        {
+          "src": "/openmrs/spa/bwongo.png",
+          "alt": "Bwongo Digital Solutions"
+        }
+      ]
+    }
+    },
     "@openmrs/esm-primary-navigation-app": {
       "logo": {
         "src": "/openmrs/spa/logo.png",
