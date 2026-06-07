@@ -8,8 +8,12 @@
       }
     }
   },
-   "@clinicemr/esm-post-registration-redirect-app": {
-    "registrationClerkRoleName": "Organizational: Registration Clerk",
+  "@clinicemr/esm-patient-payment-manager-app": {
+    "cashierRoleNames": ["Organizational: Nurse", "Cashier", "Receptionist"],
+    "providerRoleNames": ["Doctor", "Organizational: Doctor", "Pharmacist", "Organizational: Pharmacist", "Laboratory", "Organizational: Laboratory"],
+    "consultationBillableServiceUuid": "",
+    "cashPointUuid": "",
+    "defaultCurrency": "UGX",
     "registrationEncounterTypeUuid": "dd528487-82a5-4082-9c72-ed246bd49591"
   },
   "@clinicemr/esm-patient-lab-request-form-app": {
