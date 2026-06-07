@@ -6,7 +6,7 @@ services:
       - frontend
       - backend
     ports:
-      - "8080:80"
+      - "8080:84"
 
   frontend:
     image: e2e/frontend:latest
