@@ -250,6 +250,23 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.openmrs.maven.plugins</groupId>
+        <artifactId>openmrs-sdk-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>openmrs-sdk:build-distro</id>
+            <goals>
+              <goal>build-distro</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <distro>${project.build.directory}/distro.properties</distro>
+              <dir>${project.build.directory}/sdk-distro</dir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -275,21 +292,20 @@
               </resources>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.openmrs.maven.plugins</groupId>
-        <artifactId>openmrs-sdk-maven-plugin</artifactId>
-        <executions>
           <execution>
-            <id>openmrs-sdk:build-distro</id>
-            <goals>
-              <goal>build-distro</goal>
-            </goals>
+            <id>copy-local-openmrs-config</id>
             <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
             <configuration>
-              <distro>${project.build.directory}/distro.properties</distro>
-              <dir>${project.build.directory}/sdk-distro</dir>
+              <outputDirectory>${project.build.directory}/sdk-distro/web/openmrs_config</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/main/resources/openmrs_config</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>

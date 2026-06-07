@@ -37,7 +37,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=dev /app/spa /usr/share/nginx/html
 COPY config-core_demo.json /usr/share/nginx/html
-COPY logo.png /usr/share/nginx/html/logo.png
+COPY logo.png /usr/share/nginx/html
+COPY background-image.png /usr/share/nginx/html
 COPY billing-logo.png /usr/share/nginx/html/billing-logo.png
 
 
