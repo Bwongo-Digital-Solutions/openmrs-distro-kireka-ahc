@@ -46,7 +46,7 @@
     "@openmrs/esm-user-onboarding-app": "next",
     "@openmrs/esm-ward-app": "next",
     "@clinicemr/esm-patient-lab-request-form-app": "1.1.2",
-    "@clinicemr/esm-patient-payment-manager-app": "1.0.0"
+    "@clinicemr/esm-patient-payment-manager-app": "1.0.1"
   },
   "excludedFrontendModules": []
 }

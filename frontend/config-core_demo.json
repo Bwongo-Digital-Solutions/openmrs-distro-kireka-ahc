@@ -9,7 +9,7 @@
     }
   },
   "@clinicemr/esm-patient-payment-manager-app": {
-    "cashierRoleNames": ["Organizational: Nurse", "Cashier", "Receptionist"],
+    "cashierRoleNames": ["Organizational: Nurse", "Organizational: Registration Clerk", "Cashier", "Receptionist"],
     "providerRoleNames": ["Doctor", "Organizational: Doctor", "Pharmacist", "Organizational: Pharmacist", "Laboratory", "Organizational: Laboratory"],
     "consultationBillableServiceUuid": "",
     "cashPointUuid": "",
