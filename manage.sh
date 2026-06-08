@@ -60,8 +60,8 @@ start_containers_ssl() {
 build_and_publish() {
     print_header "Build and Publish to Docker Hub"
 
-    read -p "Docker Hub username/organization [openmrs]: " docker_org
-    docker_org=${docker_org:-openmrs}
+    read -p "Docker Hub username/organization [tendomart]: " docker_org
+    docker_org=${docker_org:-tendomart}
 
     read -p "Image tag [latest]: " image_tag
     image_tag=${image_tag:-latest}
@@ -90,11 +90,20 @@ build_and_publish() {
     # Check if buildx is available
     if docker buildx version >/dev/null 2>&1; then
         use_buildx=true
-        print_success "Docker Buildx detected. Using multi-platform build."
+        print_success "Docker Buildx detected."
     else
         use_buildx=false
         print_warning "Docker Buildx not detected. Using standard docker build + push."
     fi
+
+    # Detect host architecture to avoid QEMU exec format errors
+    HOST_ARCH=$(uname -m)
+    case "$HOST_ARCH" in
+        x86_64) PLATFORM="linux/amd64" ;;
+        aarch64|arm64) PLATFORM="linux/arm64" ;;
+        *) PLATFORM="linux/amd64" ;;
+    esac
+    print_success "Building for host architecture: ${PLATFORM}"
 
     build_push_service() {
         local service_name=$1
@@ -104,7 +113,7 @@ build_and_publish() {
         print_header "Building and pushing ${service_name}"
 
         if [ "$use_buildx" = true ]; then
-            if docker buildx build --platform linux/amd64,linux/arm64 --push -t "${image_name}" "${context_dir}"; then
+            if docker buildx build --platform "${PLATFORM}" --push -t "${image_name}" "${context_dir}"; then
                 print_success "${service_name} built and pushed successfully"
             else
                 print_error "${service_name} build/push failed"
@@ -161,6 +170,10 @@ deploy_production() {
     read -p "Select option (1-2): " ssl_choice
 
     export TAG="${deploy_tag}"
+
+    read -p "Docker Hub organization [tendomart]: " docker_org
+    export DOCKER_ORG="${docker_org:-tendomart}"
+    print_success "Using image organization: ${DOCKER_ORG}"
 
     case $ssl_choice in
         1)

@@ -10,7 +10,7 @@ version: "3.7"
 
 services:
     monitoring-init:
-        image: openmrs/openmrs-reference-application-3-monitoring-init:${TAG:-qa}
+        image: ${DOCKER_ORG:-openmrs}/openmrs-reference-application-3-monitoring-init:${TAG:-latest}
         build: ./monitoring
         volumes:
             - loki-data:/loki/data

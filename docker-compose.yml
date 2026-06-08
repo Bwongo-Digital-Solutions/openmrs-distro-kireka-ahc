@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: openmrs/openmrs-reference-application-3-gateway:${TAG:-qa}
+    image: ${DOCKER_ORG:-openmrs}/openmrs-reference-application-3-gateway:${TAG:-latest}
     restart: "unless-stopped"
     depends_on:
       - frontend
@@ -9,7 +9,7 @@ services:
       - "84:80"
 
   frontend:
-    image: openmrs/openmrs-reference-application-3-frontend:${TAG:-qa}
+    image: ${DOCKER_ORG:-openmrs}/openmrs-reference-application-3-frontend:${TAG:-latest}
     restart: "unless-stopped"
     environment:
       SPA_PATH: /openmrs/spa
@@ -23,7 +23,7 @@ services:
       - backend
 
   backend:
-    image: openmrs/openmrs-reference-application-3-backend:${TAG:-qa}
+    image: ${DOCKER_ORG:-openmrs}/openmrs-reference-application-3-backend:${TAG:-latest}
     restart: "unless-stopped"
     depends_on:
       - db

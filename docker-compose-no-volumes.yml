@@ -2,7 +2,7 @@
 
 services:
   backend:
-    image: openmrs/openmrs-reference-application-3-backend:${TAG:-nightly}
+    image: ${DOCKER_ORG:-openmrs}/openmrs-reference-application-3-backend:${TAG:-latest}
     depends_on:
       - db
     environment:
