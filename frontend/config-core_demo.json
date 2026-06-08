@@ -65,10 +65,14 @@
     }
   },
   "@openmrs/esm-login-app": {
-          "logo": {
+        "logo": {
         "src": "/openmrs/spa/logo-login.png",
         "alt": "ClinicEMR - Medical Records System"
       },
+      "background": {
+      "image": "openmrs/spa/background-image.png",
+      "color": "#f4f4f4"
+    },
       "announcements": [
       {
         "title": "Kireka Adventist Health Centre",
