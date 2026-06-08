@@ -56,6 +56,140 @@ start_containers_ssl() {
     print_success "Containers started with SSL successfully"
 }
 
+# Function to build and publish images to Docker Hub
+build_and_publish() {
+    print_header "Build and Publish to Docker Hub"
+
+    read -p "Docker Hub username/organization [openmrs]: " docker_org
+    docker_org=${docker_org:-openmrs}
+
+    read -p "Image tag [latest]: " image_tag
+    image_tag=${image_tag:-latest}
+
+    echo ""
+    echo "Services to build and push:"
+    echo "  1) frontend   -> ${docker_org}/openmrs-reference-application-3-frontend:${image_tag}"
+    echo "  2) gateway    -> ${docker_org}/openmrs-reference-application-3-gateway:${image_tag}"
+    echo "  3) backend    -> ${docker_org}/openmrs-reference-application-3-backend:${image_tag}"
+    echo "  4) certbot    -> ${docker_org}/openmrs-reference-application-3-certbot:${image_tag}"
+    echo "  5) All of the above"
+    echo ""
+    read -p "Select service to build and push (1-5): " publish_choice
+
+    # Check Docker Hub login
+    if ! docker info 2>/dev/null | grep -q "Username"; then
+        echo "You do not appear to be logged in to Docker Hub."
+        read -p "Do you want to log in now? (y/n): " login_choice
+        if [[ $login_choice == "y" || $login_choice == "Y" ]]; then
+            docker login
+        else
+            print_warning "Skipping login. Push may fail if not already authenticated."
+        fi
+    fi
+
+    # Check if buildx is available
+    if docker buildx version >/dev/null 2>&1; then
+        use_buildx=true
+        print_success "Docker Buildx detected. Using multi-platform build."
+    else
+        use_buildx=false
+        print_warning "Docker Buildx not detected. Using standard docker build + push."
+    fi
+
+    build_push_service() {
+        local service_name=$1
+        local context_dir=$2
+        local image_name=$3
+
+        print_header "Building and pushing ${service_name}"
+
+        if [ "$use_buildx" = true ]; then
+            if docker buildx build --platform linux/amd64,linux/arm64 --push -t "${image_name}" "${context_dir}"; then
+                print_success "${service_name} built and pushed successfully"
+            else
+                print_error "${service_name} build/push failed"
+            fi
+        else
+            if docker build -t "${image_name}" "${context_dir}"; then
+                if docker push "${image_name}"; then
+                    print_success "${service_name} built and pushed successfully"
+                else
+                    print_error "${service_name} push failed"
+                fi
+            else
+                print_error "${service_name} build failed"
+            fi
+        fi
+    }
+
+    case $publish_choice in
+        1)
+            build_push_service "frontend" "./frontend" "${docker_org}/openmrs-reference-application-3-frontend:${image_tag}"
+            ;;
+        2)
+            build_push_service "gateway" "./gateway" "${docker_org}/openmrs-reference-application-3-gateway:${image_tag}"
+            ;;
+        3)
+            build_push_service "backend" "." "${docker_org}/openmrs-reference-application-3-backend:${image_tag}"
+            ;;
+        4)
+            build_push_service "certbot" "./certbot" "${docker_org}/openmrs-reference-application-3-certbot:${image_tag}"
+            ;;
+        5)
+            build_push_service "frontend" "./frontend" "${docker_org}/openmrs-reference-application-3-frontend:${image_tag}"
+            build_push_service "gateway" "./gateway" "${docker_org}/openmrs-reference-application-3-gateway:${image_tag}"
+            build_push_service "backend" "." "${docker_org}/openmrs-reference-application-3-backend:${image_tag}"
+            build_push_service "certbot" "./certbot" "${docker_org}/openmrs-reference-application-3-certbot:${image_tag}"
+            ;;
+        *)
+            print_error "Invalid choice"
+            ;;
+    esac
+}
+
+# Function to deploy published images to production
+deploy_production() {
+    print_header "Deploy to Production"
+
+    read -p "Image tag to deploy [prod]: " deploy_tag
+    deploy_tag=${deploy_tag:-prod}
+
+    echo ""
+    echo "SSL configuration:"
+    echo "1) Deploy without SSL (HTTP only)"
+    echo "2) Deploy with SSL (HTTPS)"
+    read -p "Select option (1-2): " ssl_choice
+
+    export TAG="${deploy_tag}"
+
+    case $ssl_choice in
+        1)
+            print_header "Pulling images and deploying (HTTP)"
+            docker compose pull
+            docker compose up -d
+            print_success "Production deployment (HTTP) complete"
+            ;;
+        2)
+            if [ ! -f "docker-compose.ssl.yml" ]; then
+                print_error "docker-compose.ssl.yml not found"
+                return 1
+            fi
+            print_header "Pulling images and deploying (SSL/HTTPS)"
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml pull
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+            print_success "Production deployment (SSL/HTTPS) complete"
+            ;;
+        *)
+            print_error "Invalid SSL option"
+            return 1
+            ;;
+    esac
+
+    echo ""
+    echo "Deployed images:"
+    docker compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Ports}}"
+}
+
 # Function to stop containers
 stop_containers() {
     print_header "Stopping Containers"
@@ -389,14 +523,16 @@ show_menu() {
     echo "11) Rebuild with SSL and no cache"
     echo "12) Show container status"
     echo "13) Show resource usage"
-    echo "14) Exit"
+    echo "14) Build and publish to Docker Hub"
+    echo "15) Deploy to production"
+    echo "16) Exit"
     echo ""
 }
 
 # Main loop
 while true; do
     show_menu
-    read -p "Enter your choice (1-14): " choice
+    read -p "Enter your choice (1-16): " choice
 
     case $choice in
         1)
@@ -439,11 +575,17 @@ while true; do
             show_resources
             ;;
         14)
+            build_and_publish
+            ;;
+        15)
+            deploy_production
+            ;;
+        16)
             print_success "Exiting..."
             exit 0
             ;;
         *)
-            print_error "Invalid choice. Please enter a number between 1 and 14."
+            print_error "Invalid choice. Please enter a number between 1 and 16."
             ;;
     esac
 
