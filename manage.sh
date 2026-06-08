@@ -45,6 +45,17 @@ start_containers() {
     print_success "Containers started successfully"
 }
 
+# Function to start containers with SSL
+start_containers_ssl() {
+    print_header "Starting Containers with SSL"
+    if [ ! -f "docker-compose.ssl.yml" ]; then
+        print_error "docker-compose.ssl.yml not found"
+        return 1
+    fi
+    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+    print_success "Containers started with SSL successfully"
+}
+
 # Function to stop containers
 stop_containers() {
     print_header "Stopping Containers"
@@ -270,6 +281,85 @@ rebuild_no_cache() {
     fi
 }
 
+# Function to rebuild with SSL and no cache
+rebuild_ssl_no_cache() {
+    print_header "Rebuilding Containers with SSL (No Cache)"
+    if [ ! -f "docker-compose.ssl.yml" ]; then
+        print_error "docker-compose.ssl.yml not found"
+        return 1
+    fi
+    echo "Select service to rebuild:"
+    echo "1) All services"
+    echo "2) Gateway"
+    echo "3) Frontend"
+    echo "4) Backend"
+    echo "5) Database"
+    echo "6) Certbot"
+    read -p "Enter choice (1-6): " rebuild_choice
+
+    case $rebuild_choice in
+        1)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache
+            print_success "All containers rebuilt with SSL without cache"
+            ;;
+        2)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache gateway
+            print_success "Gateway container rebuilt with SSL without cache"
+            ;;
+        3)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache frontend
+            print_success "Frontend container rebuilt with SSL without cache"
+            ;;
+        4)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache backend
+            print_success "Backend container rebuilt with SSL without cache"
+            ;;
+        5)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache db
+            print_success "Database container rebuilt with SSL without cache"
+            ;;
+        6)
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml build --no-cache certbot
+            print_success "Certbot container rebuilt without cache"
+            ;;
+        *)
+            print_error "Invalid choice"
+            return
+            ;;
+    esac
+
+    read -p "Do you want to restart the containers? (y/n): " restart
+    if [[ $restart == "y" || $restart == "Y" ]]; then
+        if [[ $rebuild_choice == "1" ]]; then
+            docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+            print_success "All containers restarted with SSL successfully"
+        else
+            case $rebuild_choice in
+                2)
+                    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d gateway
+                    print_success "Gateway container restarted with SSL successfully"
+                    ;;
+                3)
+                    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d frontend
+                    print_success "Frontend container restarted with SSL successfully"
+                    ;;
+                4)
+                    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d backend
+                    print_success "Backend container restarted with SSL successfully"
+                    ;;
+                5)
+                    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d db
+                    print_success "Database container restarted with SSL successfully"
+                    ;;
+                6)
+                    docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d certbot
+                    print_success "Certbot container restarted successfully"
+                    ;;
+            esac
+        fi
+    fi
+}
+
 # Function to show container status
 show_status() {
     print_header "Container Status"
@@ -288,24 +378,26 @@ show_menu() {
     print_header "Docker Management Menu"
     echo "1) Build containers"
     echo "2) Start containers"
-    echo "3) Stop containers"
-    echo "4) Delete containers"
-    echo "5) Prune containers (remove unused resources)"
-    echo "6) Show logs"
-    echo "7) Restart containers"
-    echo "8) Copy static assets (without rebuilding)"
-    echo "9) Rebuild with no cache"
-    echo "10) Show container status"
-    echo "11) Show resource usage"
-    echo "12) Exit"
+    echo "3) Start containers with SSL"
+    echo "4) Stop containers"
+    echo "5) Delete containers"
+    echo "6) Prune containers (remove unused resources)"
+    echo "7) Show logs"
+    echo "8) Restart containers"
+    echo "9) Copy static assets (without rebuilding)"
+    echo "10) Rebuild with no cache"
+    echo "11) Rebuild with SSL and no cache"
+    echo "12) Show container status"
+    echo "13) Show resource usage"
+    echo "14) Exit"
     echo ""
 }
 
 # Main loop
 while true; do
     show_menu
-    read -p "Enter your choice (1-12): " choice
-    
+    read -p "Enter your choice (1-14): " choice
+
     case $choice in
         1)
             build_containers
@@ -314,41 +406,47 @@ while true; do
             start_containers
             ;;
         3)
-            stop_containers
+            start_containers_ssl
             ;;
         4)
-            delete_containers
+            stop_containers
             ;;
         5)
-            prune_containers
+            delete_containers
             ;;
         6)
-            show_logs
+            prune_containers
             ;;
         7)
-            restart_containers
+            show_logs
             ;;
         8)
-            copy_static_assets
+            restart_containers
             ;;
         9)
-            rebuild_no_cache
+            copy_static_assets
             ;;
         10)
-            show_status
+            rebuild_no_cache
             ;;
         11)
-            show_resources
+            rebuild_ssl_no_cache
             ;;
         12)
+            show_status
+            ;;
+        13)
+            show_resources
+            ;;
+        14)
             print_success "Exiting..."
             exit 0
             ;;
         *)
-            print_error "Invalid choice. Please enter a number between 1 and 12."
+            print_error "Invalid choice. Please enter a number between 1 and 14."
             ;;
     esac
-    
+
     echo ""
     read -p "Press Enter to continue..."
 done
