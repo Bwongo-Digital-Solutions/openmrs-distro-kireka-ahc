@@ -11,16 +11,27 @@
   "@clinicemr/esm-patient-payment-manager-app": {
     "cashierRoleNames": ["Organizational: Nurse", "Organizational: Registration Clerk", "Cashier", "Receptionist"],
     "providerRoleNames": ["Doctor", "Organizational: Doctor", "Pharmacist", "Organizational: Pharmacist", "Laboratory", "Organizational: Laboratory"],
-    "consultationBillableServiceUuid": "",
-    "cashPointUuid": "",
+    "billableServices": [
+      { "uuid": "consultation", "name": "Consultation", "price": 10000 },
+      { "uuid": "lab-general", "name": "Laboratory test", "price": 15000 },
+      { "uuid": "pharmacy-general", "name": "Pharmacy / Drugs", "price": 5000 }
+    ],
+    "paymentMethods": ["Cash", "Bank", "Mobile Money", "Airtel Money"],
+    "insuranceProviders": ["Jubilee Insurance", "UAP Old Mutual", "AAR Insurance", "Prudential", "Sanlam", "Liberty Health"],
+    "consultationBillableServiceUuid": "consultation",
     "defaultCurrency": "UGX",
     "registrationEncounterTypeUuid": "dd528487-82a5-4082-9c72-ed246bd49591",
+    "registrationListPath": "payment-manager/patients",
+    "consultationPaymentPath": "payment-manager/consultation",
     "billingApiBasePath": "cashier"
   },
   "@clinicemr/esm-patient-lab-request-form-app": {
     "labOrderEncounterTypeUuid": "67a71486-1a54-468f-ac3e-7091a9a79584",
     "labOrderTypeUuid": "52a447d3-a64a-11e3-9aeb-50e549534c5e",
-    "careSettingUuid": "6f0c9a92-6f24-11e3-af88-005056821db0"
+    "careSettingUuid": "6f0c9a92-6f24-11e3-af88-005056821db0",
+    "defaultCurrency": "UGX",
+    "defaultTestPrice": 5000,
+    "testPrices": []
   },
   "@openmrs/esm-billing-app": {
     "defaultCurrency": "UGX",
