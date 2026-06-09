@@ -49,6 +49,8 @@
     }
   },
   "@openmrs/esm-styleguide": {
+    "implementationName": "Kireka Adevntist Health Centre",
+    "pageTitle": "Kireka Adevntist Health Centre - OpenMRS",
     "Brand color #1": "#038BA5",
     "Brand color #2": "#037c91",
     "Brand color #3": "#036d80"
