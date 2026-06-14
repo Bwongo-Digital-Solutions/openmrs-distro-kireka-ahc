@@ -12,13 +12,13 @@
     "cashierRoleNames": ["Organizational: Nurse", "Organizational: Registration Clerk", "Cashier", "Receptionist"],
     "providerRoleNames": ["Doctor", "Organizational: Doctor", "Pharmacist", "Organizational: Pharmacist", "Laboratory", "Organizational: Laboratory"],
     "billableServices": [
-      { "uuid": "consultation", "name": "Consultation", "price": 10000 },
+      { "uuid": "859cfd14-9c62-42cd-8c68-57155a8a2c5a", "name": "Consultation", "price": 10000 },
       { "uuid": "lab-general", "name": "Laboratory test", "price": 15000 },
       { "uuid": "pharmacy-general", "name": "Pharmacy / Drugs", "price": 5000 }
     ],
-    "paymentMethods": ["Cash", "Bank", "Mobile Money", "Airtel Money"],
+    "paymentMethods": ["Cash", "Bank", "Mobile Money", "Airtel Money", "Insurance"],
     "insuranceProviders": ["Jubilee Insurance", "UAP Old Mutual", "AAR Insurance", "Prudential", "Sanlam", "Liberty Health"],
-    "consultationBillableServiceUuid": "consultation",
+    "consultationBillableServiceUuid": "859cfd14-9c62-42cd-8c68-57155a8a2c5a",
     "defaultCurrency": "UGX",
     "registrationEncounterTypeUuid": "dd528487-82a5-4082-9c72-ed246bd49591",
     "registrationListPath": "payment-manager/patients",

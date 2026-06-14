@@ -1,0 +1,3 @@
+Uuid,Void/Retire,Name,Description,View privilege,Edit privilege,_order:1000
+dd528487-82a5-4082-9c72-ed246bd49591,,Registration,Patient registration encounter for payment workflow,,,
+67a71486-1a54-468f-ac3e-7091a9a79584,,Lab Order,Lab test order request encounter,,,

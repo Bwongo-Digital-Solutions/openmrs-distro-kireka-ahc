@@ -219,6 +219,7 @@
       <id>distro</id>
       <modules>
         <module>distro</module>
+        <module>openmrs-content-kireka</module>
       </modules>
     </profile>
     <profile>

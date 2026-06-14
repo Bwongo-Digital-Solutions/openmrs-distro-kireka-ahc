@@ -1,0 +1,11 @@
+Uuid,Role name,Description,Inherited roles,Privileges,_order:1000
+10fb2a4f-07b4-4c87-b274-0e3c9fac8b5f,Cashier,Cashier role for handling patient payments,,,
+8b0e7bed-9f53-456d-9eac-51bc478d5667,Receptionist,Receptionist role for patient registration and check-in,,,
+5875b9ba-4df7-4f28-8191-5580dc4e9483,Doctor,Doctor role for clinical consultations,,,
+f0d78268-2b23-4b10-9059-dc9cc94b05bd,Pharmacist,Pharmacist role for dispensing medications,,,
+11457fe6-69a9-4ef2-bc5d-394c6f4b86df,Laboratory,Laboratory role for conducting and recording lab tests,,,
+533f63f4-7673-4e72-9704-e5e4f837a6cf,Organizational: Nurse,Nurse role for nursing care and vitals,,,
+748fa030-21dc-4a48-93fe-f51e086bc57c,Organizational: Registration Clerk,Registration clerk role for intake and data entry,,,
+43758b00-03d0-4c05-939b-cf347c487481,Organizational: Doctor,Doctor role with organizational privileges,,,
+067158d4-becb-42f1-8b14-564e8ee7793f,Organizational: Pharmacist,Pharmacist role with organizational privileges,,,
+ed02e70d-340f-42a3-985d-4a365ac31492,Organizational: Laboratory,Laboratory role with organizational privileges,,,

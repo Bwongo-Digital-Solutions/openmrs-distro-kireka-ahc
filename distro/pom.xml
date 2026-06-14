@@ -60,6 +60,7 @@
     <reference-content.version>1.4.0</reference-content.version>
     <!-- <reference-demo-content.version>1.9.0</reference-demo-content.version> -->
     <kireka-content.version>1.0.0</kireka-content.version>
+    <!-- Content package release version for Maven Central -->
   </properties>
 
   <dependencies>
